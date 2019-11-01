@@ -9,9 +9,9 @@ Before building, be sure to open up the src/app/data.service.ts file and change 
 Then build <ng build --prod --aot> to generate your files. You should see them in the dist/<your project name> directory.
 
 Below are all dependencies this project needs to work.
-# Hello
+
 Extra Dependencies
-==================
+========================
 
 Django
 ------

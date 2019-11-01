@@ -108,7 +108,7 @@ DATABASES = {
         'NAME': 'chatscrum',
         'USER': 'root',
         'PASSWORD': '8iu7*IU&',
-        'HOST': 'chatscrum-mysql',
+        'HOST': 'chatscrum mysql',
         'PORT': '3306',
         'OPTIONS': {
             'raise_on_warnings': False,

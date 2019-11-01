@@ -28,7 +28,6 @@ FROM docker.io/showpopulous/chatscrum_img_base2:basev2
 ####### If you rebuild the chatscrum image 
 # in the even that you have rebuilt the image, make sure db user linuxjobber can access your database, then run the command below:
 # docker run -d -p 5000:5000 -p 5100:5100 -e "DATABASE_URL=mysql://linuxjobber:8iu7*IU&@lj_db" -e "SESSION_DEFAULTS=database" --link lj_db --name history_image   
-# Adjustment made to test
 
 MAINTAINER The CentOS Project <cloud-ops@centos.org>
 
@@ -57,7 +56,7 @@ RUN pip3.6 install slackclient pymysql
 RUN . $HOME/.nvm/nvm.sh && yes | cp -r /web/www/Angular/* /web/Chatscrum-Angular/src
 RUN cd /web/Chatscrum-Angular/ && sed -i '26s/.*/"src\/styles.css","node_modules\/materialize-css\/dist\/css\/materialize.min.css"/' angular.json; 
 RUN cd /web/Chatscrum-Angular/ && sed -i '28s/.*/"scripts": ["node_modules\/jquery\/dist\/jquery.min.js","node_modules\/materialize-css\/dist\/js\/materialize.min.js"]/' angular.json; sed -i '19s/.*/],"types": ["jquery","materialize-css"]/' tsconfig.json;
-RUN cd /web/Chatscrum-Angular/ && sed -i 's/127.0.0.1:8000/3.15.107.156:5000/' src/app/data.service.ts;
+RUN cd /web/Chatscrum-Angular/ && sed -i 's/127.0.0.1:8000/35.166.43.193:5000/' src/app/data.service.ts;
 #RUN ls /web/Chatsrum-Angular
 #RUN cat /web/Chatscrum-Angular/src/app/profile/profile.component.html
 RUN cd /web/Chatscrum-Angular && . $HOME/.nvm/nvm.sh && npm install ngx-materialize materialize-css@next ng2-dragula rxjs && ng build --prod --aot

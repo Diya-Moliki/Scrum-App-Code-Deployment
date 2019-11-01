@@ -31,6 +31,7 @@ export class ProfileComponent implements OnInit {
   public at_bottom: boolean = true;
   public id_hover = -1;
   public id_click = -1;
+  public id_clicks = -1;
   sprint_start: Number;
   sprint_end: Number;
   goal_id: string;
@@ -44,12 +45,13 @@ export class ProfileComponent implements OnInit {
   public selected_history:any = [];
   public clicked_user;
   public note;
+  public workid;
+  public branch;
+  public log;
+  public log_priority;
   public note_priority;
   public board: string = "AllTask"
-<<<<<<< HEAD
-=======
   public rep;
->>>>>>> f25073d21c1c0dbbc46e586af81bd94eaa32e64f
     
   public modalOptions: Materialize.ModalOptions = {
     dismissible: false, // Modal can be dismissed by clicking outside of the modal
@@ -79,7 +81,7 @@ export class ProfileComponent implements OnInit {
     this.subs.add(
         this.dragula.drop('mainTable').subscribe(
             value => {
-                this.dataservice.users_id = []
+                this.dataservice.users_done = []
                 console.log(value);
                 var el = value['el'];
                 var target = value['target'];
@@ -98,18 +100,17 @@ export class ProfileComponent implements OnInit {
                         var hours_in = window.prompt('How many hours did you spend on this task?');
                         hours = parseInt(hours_in, 10);
                         if(hours + '' == 'NaN')
-                            hours = -1;
-                    }
-                    if(target['id'] == '3' && source['id'] == '2')
-                    {
-                        hours = -11;
+                            hours = -1; 
+
+                        hours = hours;
                         var push_id = window.prompt('Enter Task Push ID?');
                         
                         if(push_id == '') {
                           console.log('tHE PUSH IS NULL')
                           push_id = "Null Value" 
-                          }                      
+                          }                                        
                     }
+                   
                     console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@in hours@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
                     console.log(hours)
                     this.dataservice.moveGoal(el['id'], target['id'], hours, push_id);
@@ -125,7 +126,7 @@ export class ProfileComponent implements OnInit {
                   console.log(target['id'])
                   console.log(source['id'])
                   
-                    if(target['id'] == '3' && source['id'] == '2')
+                    if(target['id'] == '2' && source['id'] == '1')
                     {
                         hours = -11;
                         var push_id = window.prompt('Enter Task Push ID?');
@@ -141,7 +142,7 @@ export class ProfileComponent implements OnInit {
                         }                     
                     }
 
-                    if (target['id'] == "3" && source['id'] < "2") {
+                    if (target['id'] == "2" && source['id'] < "1") {
                       hours = -13;
                      var push_id = window.prompt('Enter Task Push ID?');
                         
@@ -214,6 +215,14 @@ export class ProfileComponent implements OnInit {
             console.log(this.dataservice.project_slack)
             console.log(this.dataservice.user_slack)
             console.log(this.dataservice.slack_app_id)
+
+
+            if (this.dataservice.user_slack == "false" && this.dataservice.project_slack == true) {
+              console.log("=======================C SIGNING IN USER TO SLACK =================================")
+              window.location.replace("https://slack.com/oauth/authorize?client_id=" + this.dataservice.slack_app_id + "&state=main_chat_" + this.dataservice.project_name + ">>>" + this.dataservice.username + "&scope=identity.basic identity.team identity.avatar identity.email")
+            } 
+
+
 
 
             this.filterSprint(res2)
@@ -292,7 +301,7 @@ export class ProfileComponent implements OnInit {
 
   changeSprint() 
   {  
-  this.dataservice.users_id = [] 
+  this.dataservice.users_done = [] 
     this.dataservice.message ="";
     this.dataservice.sprint_goals = [];
       for (var i = 0;  i < this.dataservice.users.length; i++)  {
@@ -309,7 +318,7 @@ export class ProfileComponent implements OnInit {
 
             
   filterSprint(uSprints) {
-    this.dataservice.users_id = []
+    this.dataservice.users_done = []
     this.dataservice.sprints= uSprints
     var filter_goal = []
     console.log(filter_goal)
@@ -647,15 +656,12 @@ export class ProfileComponent implements OnInit {
     this.board = "MyTask"
   }
 
-<<<<<<< HEAD
-=======
   backlog()  {
     this.dataservice.message ="";
     console.log(this.dataservice.project)
     this.board = "Backlog"
   }
 
->>>>>>> f25073d21c1c0dbbc46e586af81bd94eaa32e64f
   initMainChat(){
     this.dataservice.message ="";
     this.websocket.send(JSON.stringify({'project_id': this.dataservice.project,  'user': this.dataservice.realname, 'message': '!join ' + this.dataservice.project_name, 'goal_id': 'main_chat_' + this.dataservice.project_name, 'slack_username': this.dataservice.slack_username }));
@@ -738,18 +744,7 @@ export class ProfileComponent implements OnInit {
     this.dragula.destroy('mainTable');
   }
 
-  scrollIntoView(anchorHash) {
-    this.dataservice.message ="";
-    this.id_click = parseInt(anchorHash.substring(1), 10);
-    setTimeout(() => {
-        const anchor = document.getElementById(anchorHash);
-        console.log(anchorHash);
-        if (anchor) {
-            anchor.focus();
-            anchor.scrollIntoView();
-        }
-    });
-}
+
 
 // this.dataservice.sprint_goals = [];
 //       for (var i = 0;  i < this.dataservice.users.length; i++)  {
@@ -874,6 +869,8 @@ export class ProfileComponent implements OnInit {
             }
          }
   }
+
+
 //   addGoalModal(){
 //     $(document).ready(function(){
 //         // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
@@ -881,8 +878,6 @@ export class ProfileComponent implements OnInit {
 //       });
 //   }
 
-<<<<<<< HEAD
-=======
   add_a_workid()  {
     this.dataservice.message ="";
     console.log(this.workid)
@@ -1032,7 +1027,7 @@ export class ProfileComponent implements OnInit {
           if (this.dataservice.users[i].id == this.dataservice.users[i].id)
             { 
             console.log(this.dataservice.users[i]) 
-            this.dataservice.proj_log = this.dataservice.users[0].scrumlog_set
+            this.dataservice.proj_log = this.dataservice.users[2].scrumlog_set
             console.log(this.dataservice.proj_log)
             }
          }
@@ -1071,7 +1066,6 @@ export class ProfileComponent implements OnInit {
 
 
 
->>>>>>> f25073d21c1c0dbbc46e586af81bd94eaa32e64f
 
   selectFile(event) {
     console.log(event)
@@ -1174,6 +1168,80 @@ autogrow() {
   textArea.style.height = 'auto';
   textArea.style.height = textArea.scrollHeight + 'px';
   console.log(this.chat_text)
+
+}
+
+  scrollIntoView(anchorHash) {
+    console.log("This is scroll into view")
+    console.log(anchorHash)
+    this.dataservice.message ="";
+    this.id_clicks = parseInt(anchorHash.substring(2), 10);
+    console.log(this.id_clicks)
+    console.log(anchorHash.substring(0))
+    console.log(anchorHash.substring(1))
+    console.log(anchorHash.substring(2))
+    setTimeout(() => {
+        const anchor = document.getElementById(anchorHash);
+        console.log(anchorHash);
+        if (anchor) {
+            anchor.focus();
+            anchor.scrollIntoView({behavior: "smooth", block: "center", inline: "center"});
+        }
+    });
+}
+
+
+taskHighlight(message) {
+  console.log("This is task highlight")
+  console.log(message)
+  let m = message.split(" ").pop(); 
+    if( m.startsWith("#") && m.length > 1)  {
+      console.log("Start wiith =====")
+      console.log(m)
+      console.log(m.substring(1))
+      let gs = "gs" + m.substring(1)
+      console.log(gs)
+      this.scrollIntoView(gs)
+    }
+  
+  // var test = '';
+  // this.rep = 'gg';
+  // var text = "oooooooo";
+  
+  // let stylizedText: string = '';
+  // for(let m of message.split(" "))  {
+  //   if( m.startsWith("#") && m.length > 1)
+  //     stylizedText += `<span style="font-weight: bold; color: #1f7a7a">${m}</span> `;
+  //   else
+  //     stylizedText += m + " ";
+  // }  
+  // console.log("THE OUTPUT DATA")
+  // console.log(stylizedText)
+  // console.log(this.chat_text)
+  // console.log(message)
+  // this.chat_text = message.replace(/yes/g, "<a>tttty</a>")
+ // var newDiv = document.createElement("span");
+ // newDiv.innerHTML = "yytt"
+ // newDiv.style.color = "red"
+
+ //  this.chat_text = newDiv
+ //  console.log("Output values after replace")
+ //  console.log(this.rep)
+ //  console.log(this.chat_text)
+ //  console.log("Output values end of replace")
+
+}
+
+insertElement() {
+  var text = "oooooooo";
+  var newDiv = document.createElement("span");
+  var divContent = document.createTextNode(text)
+
+  newDiv.innerHTML = "yytt"
+
+  var output = newDiv.appendChild(divContent)
+  console.log(output)
+  return output
 
 }
 
