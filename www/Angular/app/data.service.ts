@@ -10,8 +10,8 @@ export class DataService {
     
 
   public domain_name = '127.0.0.1:8000';
-  public domain_protocol = 'https://';
-  public websocket = 'wss://';
+  public domain_protocol = 'http://';
+  public websocket = 'ws://';
 
   // API_domain_name = environment.API_domain_name;
   // API_domain_protocol = environment.API_domain_protocol;
