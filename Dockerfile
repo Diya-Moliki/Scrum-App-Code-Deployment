@@ -76,7 +76,7 @@ RUN cd /web && . $HOME/.nvm/nvm.sh && ng new Chatscrum-Angular --routing
 RUN . $HOME/.nvm/nvm.sh && yes | cp -r /web/www/Angular/* /web/Chatscrum-Angular/src
 RUN cd /web/Chatscrum-Angular/ && sed -i '26s/.*/"src\/styles.css","node_modules\/materialize-css\/dist\/css\/materialize.min.css"/' angular.json;
 RUN cd /web/Chatscrum-Angular/ && sed -i '28s/.*/"scripts": ["node_modules\/jquery\/dist\/jquery.min.js","node_modules\/materialize-css\/dist\/js\/materialize.min.js"]/' angular.json; sed -i '19s/.*/],"types": ["jquery","materialize-css"]/' tsconfig.json;
-RUN cd /web/Chatscrum-Angular/ && sed -i 's/127.0.0.1:8000/3.15.107.156:5000/' src/app/data.service.ts;
+RUN cd /web/Chatscrum-Angular/ && sed -i 's/127.0.0.1:8000/34.194.221.47:5000/' src/app/data.service.ts;
 
 
 RUN cd /web/Chatscrum-Angular && . $HOME/.nvm/nvm.sh && npm install ngx-materialize materialize-css@next ng2-dragula rxjs && ng build --prod --aot
