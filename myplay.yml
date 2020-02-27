@@ -1,0 +1,88 @@
+---
+
+- name: Network Getting Started First Playbook
+  hosts: mysql
+  become: yes
+
+  tasks:
+    - name: install epel
+      yum:
+        name: epel-release
+        state: present
+
+    - name: install docker
+      yum:
+        name: docker
+        #name: docker
+        state: present
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+    - name: install pip
+      yum:
+        name: python-pip
+        state: present
+      become: yes
+    - name: upgrade docker-py
+      
+      pip:
+        name: "{{ item.name }}"
+        state: present
+      with_items:
+      - { name: docker-py }
+
+    - name: pull an mysql8
+      docker_image:
+        name: 'mysql:8'
+        state: present
+
+    - name: start mysql container
+      docker_container:
+        recreate: yes
+        image: 'mysql:8'
+        state: started
+        name: ljdb
+        ports:
+         - "3306:3306"
+        env:
+          MYSQL_ROOT_PASSWORD: 8iu7*IU&
+          MYSQL_DATABASE: "chatscrum"
+          MYSQL_USER: "linuxjobber"
+          MYSQL_PASSWORD: "8iu7*IU&"
+
+    - name: pull an redis
+      docker_image:
+        name: redis
+        state: present
+
+    - name: start redis container
+      docker_container:
+        recreate: yes
+        image: redis
+        state: started
+        name: redis
+        ports:
+         - "6379:6379"
+
+    - name: docker pull docker.io/diyalo/chatscrum 
+      docker_image:
+        name: chatscrum
+        state: present
+
+    - name: start chatscrum container
+      docker_container:
+        recreate: yes
+        image: chatscrum
+        state: started
+        name: chatscrum_ci
+        links:
+         - "database1"
+        ports:
+         - "5000:5000"
+         - "5100:5100"
+        env:
+          SESSION_DEFAULTS: "database"
+      become: yes
